@@ -41,4 +41,23 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return self.customer_name
     
 
+class Categories(models.Model):
+    Categorie_id=models.IntegerField(auto_created=True,primary_key=True)
+    Categorie_name=models.CharField(max_length=300,null=True)
 
+
+class Books(models.Model):
+    bookid=models.IntegerField(primary_key=True)
+    book_name=models.CharField(max_length=300,null=True)
+    author_name=models.CharField(max_length=300,null=True)
+    published_date=models.DateField()
+    category=models.ForeignKey(Categories,on_delete=models.CASCADE)
+    customuser=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
+
+
+class Transtiondetails(models.Model):
+    tran_id=models.IntegerField(primary_key=True)
+    book_id=models.ForeignKey(Books,on_delete=models.CASCADE)
+    customuser=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    trans_date=models.DateField()
+    return_date=models.DateField()

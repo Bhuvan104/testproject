@@ -24,5 +24,9 @@ urlpatterns = [
     path('custom_login/', views.custom_login, name='custom_login'),
     path('profile/', views.profile, name='profile'),
     path('custom_logout/', views.custom_logout, name='custom_logout'),
+    path('get-books-by-category/', views.get_books_by_category, name='get_books_by_category'),
+    path('take_book/', views.take_book, name='take_book'),
+    path('returnbook/', views.returnbook, name='returnbook'),
+
     
 ]

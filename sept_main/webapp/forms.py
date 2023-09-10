@@ -12,9 +12,6 @@ class SignUpForm(forms.ModelForm):
         model = CustomUser
         fields = ['customer_name', 'email', 'password', 'dob', 'address', 'gender']
 
-
-
-
 class CustomAuthenticationForm(AuthenticationForm):
     class Meta:
         model = CustomUser

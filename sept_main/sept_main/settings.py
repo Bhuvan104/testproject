@@ -15,7 +15,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR,"templates")
-
+STATIC_DIR = os.path.join(BASE_DIR,"static")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -140,4 +140,7 @@ CORS_ALLOWED_ORIGINS = [
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 
+]
+STATICFILES_DIRS = [
+    STATIC_DIR,
 ]
