@@ -1,16 +1,21 @@
+# forms.py
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from .models import CustomUser
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from .models import CustomUser
 
-class RegistrationForm(UserCreationForm):
-    # Add any additional fields you want here
-    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
+class SignUpForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
-        model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        model = CustomUser
+        fields = ['customer_name', 'email', 'password', 'dob', 'address', 'gender']
 
-from django import forms
 
-class UploadExcelForm(forms.Form):
-    excel_file = forms.FileField()
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'password'] 

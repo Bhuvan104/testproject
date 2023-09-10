@@ -20,7 +20,9 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('upload-excel/', views.upload_excel, name='upload-excel'),
-    path('login_user/', views.login_user, name='login_user'),
-    path('test/', views.test, name='test'),
+    path('signup/', views.signup, name='signup'),
+    path('custom_login/', views.custom_login, name='custom_login'),
+    path('profile/', views.profile, name='profile'),
+    path('custom_logout/', views.custom_logout, name='custom_logout'),
+    
 ]
