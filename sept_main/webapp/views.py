@@ -21,9 +21,7 @@ from datetime import date
 def returnbook(request):
     if request.method == 'POST':
         return_book_id = request.POST.get('return_book_id')
-        print("need to find tiger",return_book_id)
         if return_book_id:
-            # Get the book to be returned
             book = Books.objects.filter(bookid=return_book_id).first()
             if book:
                 # Clear the association with the user by setting customuser to None
@@ -41,8 +39,8 @@ def take_book(request):
             if book:
                 # Assign the book to the currently logged-in user
                 book.customuser = request.user
-                book.save()
-            tran=Transtiondetails.objects.update_or_create(book_id=book,customuser=request.user,taken_date=current_date)
+                book.save() 
+            created, transaction_detail = Transtiondetails.objects.update_or_create(book_id=book,defaults={'taken_date': current_date,'customuser':request.user,'taken_date':current_date})
     return redirect('profile') 
 
 
