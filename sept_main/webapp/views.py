@@ -21,6 +21,7 @@ from .models import Books
 def returnbook(request):
     if request.method == 'POST':
         return_book_id = request.POST.get('return_book_id')
+        print("need to find tiger",return_book_id)
         if return_book_id:
             # Get the book to be returned
             book = Books.objects.filter(bookid=return_book_id).first()
@@ -33,11 +34,9 @@ def returnbook(request):
 
 def take_book(request):
     if request.method == 'POST':
-        category_id = request.POST.get('category-dropdown')  # Assuming 'category-dropdown' is the name of your select field
-        if category_id:
-            # Get a book from the selected category
-            book = Books.objects.filter(category_id=category_id, customuser__isnull=True).first()
-            print("tiger is missing",book)
+        book_id = request.POST.get('books-dropdown')  # Assuming 'books-dropdown' is the name of your select field]
+        if book_id:
+            book = Books.objects.filter(bookid=book_id, customuser__isnull=True).first()
             if book:
                 # Assign the book to the currently logged-in user
                 book.customuser = request.user

@@ -48,7 +48,7 @@
                         <option value="{{ category.Categorie_id }}">{{ category.Categorie_name }}</option>
                     {% endfor %}
                 </select>
-                <select id="book-dropdown">
+                <select id="book-dropdown" name="books-dropdown">
                     <option value="">Select a book</option>
                 </select>
                 <button type="submit">submit</button>
@@ -63,8 +63,8 @@
                         {% for book in user_taken_books %}
                         <li>
                             {{ book.book_name }}
-                            <input type="hidden" name="return_book_id" value="{{ book.bookid }}">
-                            <button type="submit">Return</button>
+                            <input type="hidden" value="{{ book.bookid }}">
+                            <button type="submit" name="return_book_id" value="{{ book.bookid }}">Return</button>
                         </li>
                         {% endfor %}
                     </ol>
@@ -94,7 +94,7 @@
 
                         // Populate the book dropdown with retrieved data
                         $.each(data.books, function(key, value) {
-                            $("#book-dropdown").append('<option value="' + value.id + '">' + value.book_name + '</option>');
+                            $("#book-dropdown").append('<option value="' + value.bookid + '">' + value.book_name + '</option>');
                         });
                     }
                 });
