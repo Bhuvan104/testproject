@@ -14,10 +14,10 @@ from rest_framework.response import Response
 from .models import Books
 from .serializers import BookSerializer
 from django.http import JsonResponse
-
-from .models import Books
-
-
+from django.utils import timezone
+from .models import Books,Transtiondetails
+from datetime import timedelta
+from datetime import date
 def returnbook(request):
     if request.method == 'POST':
         return_book_id = request.POST.get('return_book_id')
@@ -33,6 +33,7 @@ def returnbook(request):
 
 
 def take_book(request):
+    current_date = timezone.now().date()
     if request.method == 'POST':
         book_id = request.POST.get('books-dropdown')  # Assuming 'books-dropdown' is the name of your select field]
         if book_id:
@@ -41,13 +42,13 @@ def take_book(request):
                 # Assign the book to the currently logged-in user
                 book.customuser = request.user
                 book.save()
+            tran=Transtiondetails.objects.update_or_create(book_id=book,customuser=request.user,taken_date=current_date)
     return redirect('profile') 
 
 
 
 def get_books_by_category(request):
     category_id = request.GET.get('category_id')
-    
     books = Books.objects.filter(category_id=category_id ,customuser=None).values('bookid', 'book_name')
     return JsonResponse({'books': list(books)})
 
@@ -116,10 +117,26 @@ def custom_login(request):
 
 def profile(request):
     all_categories = Categories.objects.all()
+    current_date = timezone.now().date()
+    previous_date = current_date - timedelta(days=1)
+    latest_books=Books.objects.filter(published_date__gt=previous_date)
     user_taken_books=Books.objects.filter(customuser=request.user)
-    return render(request, 'profile.html', {'all_categories': all_categories,"user_taken_books":user_taken_books})
+    user_with_transaction = []
+    
+    for book in user_taken_books:
+        expiry=False
+        transaction_details = book.transtiondetails_set.all()
+        for transaction_detail in transaction_details:
+            days_difference = (current_date - transaction_detail.taken_date).days
+            if days_difference > 5:
+                expiry = True
+        user_with_transaction.append((book, transaction_details,expiry))
+        
+    return render(request, 'profile.html', {'all_categories': all_categories,"user_taken_books":user_taken_books,"latest_books":latest_books,"user_with_transaction":user_with_transaction,"current_date":current_date})
 
 @login_required
 def custom_logout(request):
     logout(request)
     return redirect('custom_login')
+
+

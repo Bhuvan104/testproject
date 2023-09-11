@@ -54,10 +54,9 @@ class Books(models.Model):
     category=models.ForeignKey(Categories,on_delete=models.CASCADE)
     customuser=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
 
-
 class Transtiondetails(models.Model):
-    tran_id=models.IntegerField(primary_key=True)
+    tran_id=models.AutoField(primary_key=True)
     book_id=models.ForeignKey(Books,on_delete=models.CASCADE)
     customuser=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
-    trans_date=models.DateField()
-    return_date=models.DateField()
+    taken_date=models.DateField()
+    return_date=models.DateField(null=True)
